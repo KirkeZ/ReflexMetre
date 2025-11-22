@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrainCircuit, Loader2, Sparkles } from 'lucide-react';
+import { BrainCircuit, Loader2, Sparkles, AlertCircle } from 'lucide-react';
 import { ReactionRecord, GeminiAnalysisResult, Language } from '../types';
 import { analyzePerformance } from '../services/geminiService';
 import { translations } from '../translations';
@@ -28,6 +28,7 @@ const AIFeedback: React.FC<AIFeedbackProps> = ({ history, lang }) => {
       const data = await analyzePerformance(history, lang);
       setResult(data);
     } catch (err: any) {
+      console.error("AI Error in UI:", err);
       setError(err.message || "Error.");
     } finally {
       setLoading(false);
@@ -82,8 +83,9 @@ const AIFeedback: React.FC<AIFeedbackProps> = ({ history, lang }) => {
       </div>
 
       {error && (
-        <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm">
-          {error}
+        <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg flex items-start gap-2 text-red-400 text-sm">
+          <AlertCircle className="w-5 h-5 shrink-0" />
+          <span>{error}</span>
         </div>
       )}
 
